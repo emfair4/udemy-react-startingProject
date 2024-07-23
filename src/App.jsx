@@ -1,10 +1,20 @@
+import { useState } from 'react';
 import { CORE_CONCEPTS } from './data.js';
 import Header from './components/Header/Header.jsx';
 import CoreConcept from './components/CoreConcept.jsx';
 import TabButton from './components/TabButton.jsx';
+import TabContent from './components/TabContent.jsx';
 
 
 function App() {
+  const [selectedTopic, setSelectedTopic] = useState();
+  const initialPrompt = <p>Please Select a topic</p>;
+  const tabContent = <TabContent selectedTopic={selectedTopic}/>;
+
+  function handleSelect(selectedButton) {
+    setSelectedTopic(selectedButton);
+  }
+
   return (
     <div>   
       <Header/>
@@ -21,11 +31,12 @@ function App() {
         <section id="examples">
           <h2>Examples</h2>
           <menu>
-            <TabButton>Components</TabButton>
-            <TabButton>JSX</TabButton>
-            <TabButton>Props</TabButton>
-            <TabButton>State</TabButton>
+            <TabButton isSelected={selectedTopic === 'components'} onSelect={() => handleSelect('components')}>Components</TabButton>
+            <TabButton isSelected={selectedTopic === 'jsx'} onSelect={() => handleSelect('jsx')}>JSX</TabButton>
+            <TabButton isSelected={selectedTopic === 'props'} onSelect={() => handleSelect('props')}>Props</TabButton>
+            <TabButton isSelected={selectedTopic === 'state'} onSelect={() => handleSelect('state')}>State</TabButton>
           </menu>
+          {selectedTopic ? tabContent : initialPrompt}
         </section>
       </main>
     </div>
